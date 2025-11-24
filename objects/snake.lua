@@ -71,47 +71,42 @@ function Snake:direction()
     local top = 0
     local bottom = love.graphics.getHeight()
 
-    local newHead = table.remove(self.draw)
     local headWas = self:head()
+    local newHead = { x = headWas.x, y = headWas.y, w = 20, h = 20}
     headWas.head = false
     headWas.body = true
     headWas.bg = Snake.BODY_COLOR
 
     if self.control == 'right' then
       newHead.x = headWas.x + Snake.CELL
-      if newHead.x > right then
-      newHead.x = left
-      end
-      newHead.y = headWas.y
     end
 
     if self.control == 'left' then
       newHead.x = headWas.x - Snake.CELL
-      if newHead.x < left then
-      newHead.x = right
-      end
-      newHead.y = headWas.y
     end
 
     if self.control == 'up' then
-      newHead.x = headWas.x
-      newHead.y = headWas.y - Snake.CELL
-      if newHead.y < top then
-      newHead.y = bottom
-      end
+        newHead.y = headWas.y - Snake.CELL
     end
 
     if self.control == 'down' then
-      newHead.x = headWas.x
       newHead.y = headWas.y + Snake.CELL
-      if newHead.y > bottom then
-      newHead.y = top
-      end
     end
 
-    newHead.headWas = true
+    newHead.head = true
     newHead.bg = Snake.HEAD_COLOR
+
     table.insert(self.draw, 1, newHead)
+    world:add(newHead, newHead.x, newHead.y, newHead.w, newHead.h)
+    newHead.x, newHead.y, cols = world:move(newHead, newHead.x, newHead.y)
+
+    if cols[1] then
+      food:delete()
+      food:create()
+    elseif true then
+      world:remove(self.draw[#self.draw])
+      table.remove(self.draw)
+    end
 end
 
 return Snake
