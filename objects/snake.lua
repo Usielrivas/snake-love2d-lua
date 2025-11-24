@@ -7,9 +7,9 @@ Snake.HEAD_COLOR = { r = 38 / Snake.COLOR_BASE, g = 112 / Snake.COLOR_BASE, b = 
 Snake.BODY_COLOR = { r = 186 / Snake.COLOR_BASE, g = 38 / Snake.COLOR_BASE, b = 253 / Snake.COLOR_BASE }
 
 function Snake:new()
-    local head = { x = 20, y = 40, w = 20, h = 20, head = true, bg = Snake.HEAD_COLOR }
-    local cola1 = { x = 20, y = 20, w = 20, h = 20, body = true, bg = Snake.BODY_COLOR }
-    local cola2 = { x = 20, y = 0, w = 20, h = 20, body = true, bg = Snake.BODY_COLOR }
+    local head = { x = 20, y = 40, w = Snake.CELL, h = Snake.CELL, head = true, bg = Snake.HEAD_COLOR }
+    local cola1 = { x = 20, y = 20, w = Snake.CELL, h = Snake.CELL,  body = true, bg = Snake.BODY_COLOR }
+    local cola2 = { x = 20, y = 0, w = Snake.CELL, h = Snake.CELL, body = true, bg = Snake.BODY_COLOR }
     self.timer = 0
     self.speed = 40
     self.control = 'pause'
@@ -98,7 +98,7 @@ function Snake:direction()
 
     table.insert(self.draw, 1, newHead)
     world:add(newHead, newHead.x, newHead.y, newHead.w, newHead.h)
-    newHead.x, newHead.y, cols = world:move(newHead, newHead.x, newHead.y)
+    local  _,  _, cols = world:check(newHead, newHead.x, newHead.y)
 
     if cols[1] then
       food:delete()
