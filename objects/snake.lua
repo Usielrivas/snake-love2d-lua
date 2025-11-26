@@ -1,5 +1,6 @@
 local Snake = Object:extend()
 
+Snake.HEAD = 1
 Snake.COLOR_BASE = 255
 Snake.tick = 0.12
 Snake.CELL = 20
@@ -58,7 +59,7 @@ function Snake:run(dt)
 end
 
 function Snake:head()
-   return self.draw[1]
+   return self.draw[Snake.HEAD]
 end
 
 function Snake:direction()
@@ -99,14 +100,18 @@ function Snake:direction()
     table.insert(self.draw, 1, newHead)
     world:add(newHead, newHead.x, newHead.y, newHead.w, newHead.h)
     local  _,  _, cols = world:check(newHead, newHead.x, newHead.y)
+    self:ate(cols)
+end
 
-    if cols[1] then
-      food:delete()
-      food:create()
-    elseif true then
+function Snake:ate(cols)
+  for i, col, pairs(cols)
+    if cols.other.food then
+      food:reset()
+    else
       world:remove(self.draw[#self.draw])
       table.remove(self.draw)
     end
+  end
 end
 
 return Snake

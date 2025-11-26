@@ -6,6 +6,11 @@ function Food:new()
   self:create()
 end
 
+function Food:reset()
+  self:delete()
+  self:create()
+end
+
 function Food:delete()
     world:remove(self.draw[#self.draw])
     table.remove(self.draw)
@@ -13,7 +18,7 @@ end
 
 function Food:create()
   local positionInitial = self:posicion()
-  local newFood = { x = positionInitial.x, y = positionInitial.y, w = 20, h = 20, body = true, bg = Snake.BODY_COLOR }
+  local newFood = { x = positionInitial.x, y = positionInitial.y, w = 20, h = 20, food = true, bg = Snake.BODY_COLOR }
 
   world:add(newFood, newFood.x, newFood.y, newFood.w, newFood.h)
   table.insert(self.draw, newFood)
