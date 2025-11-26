@@ -111,7 +111,7 @@ function Snake:direction()
 end
 
 function Snake:ate(cols)
-  for i, col in pairs(cols)
+  for i, col in pairs(cols) do
     if cols.other.food then
       food:reset()
     else
