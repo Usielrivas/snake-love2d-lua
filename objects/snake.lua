@@ -62,6 +62,21 @@ function Snake:head()
    return self.draw[Snake.HEAD]
 end
 
+function Snake:newHead()
+    local headWas = self:head()
+    local newHead = {
+       x = headWas.x, 
+       y = headWas.y,
+       w = Snake.CELL,
+       h = Snake.CELL,
+       head = true,
+       body = false,
+       bg = Snake.HEAD_COLOR
+     }
+
+     return newHead
+end
+
 function Snake:direction()
     if self.control == 'pause' then
         return
@@ -71,12 +86,7 @@ function Snake:direction()
     local right = love.graphics.getWidth()
     local top = 0
     local bottom = love.graphics.getHeight()
-
-    local headWas = self:head()
-    local newHead = { x = headWas.x, y = headWas.y, w = 20, h = 20}
-    headWas.head = false
-    headWas.body = true
-    headWas.bg = Snake.BODY_COLOR
+    local newHead = self:newHead()
 
     if self.control == 'right' then
       newHead.x = headWas.x + Snake.CELL
@@ -93,9 +103,6 @@ function Snake:direction()
     if self.control == 'down' then
       newHead.y = headWas.y + Snake.CELL
     end
-
-    newHead.head = true
-    newHead.bg = Snake.HEAD_COLOR
 
     table.insert(self.draw, 1, newHead)
     world:add(newHead, newHead.x, newHead.y, newHead.w, newHead.h)
