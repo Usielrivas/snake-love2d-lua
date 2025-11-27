@@ -18,6 +18,6 @@ function love.update(dt)
 end
 
 function love.draw()
-  snake:draw()
-  food:draw()
+  snake:drawSnake()
+  food:drawFood()
 end

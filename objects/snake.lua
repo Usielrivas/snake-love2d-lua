@@ -138,7 +138,7 @@ function Snake:ate(cols)
   end
 end
 
-function Snake:draw()
+function Snake:drawSnake()
    for i, snakePart in pairs(self.draw) do
       love.graphics.setColor(snakePart.bg.r, snakePart.bg.g, snakePart.bg.b)
       love.graphics.rectangle("fill", snakePart.x, snakePart.y, snakePart.w, snakePart.h)
