@@ -111,10 +111,15 @@ function Snake:direction()
 end
 
 function Snake:ate(cols)
+  local ate = false
+    
   for i, col in pairs(cols) do
-    if cols.other.food then
+    if col.other.food then
+      ate = true
       food:reset()
-    else
+    end
+
+    if not ate then
       world:remove(self.draw[#self.draw])
       table.remove(self.draw)
     end
