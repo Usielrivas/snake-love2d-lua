@@ -1,0 +1,53 @@
+name: Build and Deploy Love2D Web
+
+on:
+  push:
+    branches:
+      - main  # deploy on every push to main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'latest'
+
+      - name: Create game.love
+        run: |
+          zip -9 -r game.love . -x ".git/*" ".github/*"
+
+      - name: Build with love.js
+        run: npx love.js game.love salida --title "Snake lua"
+
+      - name: Upload to GitHub Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
