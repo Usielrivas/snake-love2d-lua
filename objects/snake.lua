@@ -118,11 +118,11 @@ function Snake:ate(cols)
       ate = true
       food:reset()
     end
+  end
 
-    if not ate then
-      world:remove(self.draw[#self.draw])
-      table.remove(self.draw)
-    end
+  if not ate then
+    world:remove(self.draw[#self.draw])
+    table.remove(self.draw)
   end
 end
 
