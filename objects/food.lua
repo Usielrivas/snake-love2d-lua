@@ -34,4 +34,11 @@ function Food:posicion()
     return { x = x, y = y }
 end
 
+function Food:draw()
+    for _, foodDraw in pairs(self.draw) do
+      love.graphics.setColor(foodDraw.bg.r, foodDraw.bg.g, foodDraw.bg.b)
+      love.graphics.rectangle("fill", foodDraw.x, foodDraw.y, foodDraw.w, foodDraw.h)
+    end
+end
+
 return Food

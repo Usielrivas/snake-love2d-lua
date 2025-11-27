@@ -18,13 +18,6 @@ function love.update(dt)
 end
 
 function love.draw()
-    for _, foodDraw in pairs(food.draw) do
-      love.graphics.setColor(foodDraw.bg.r, foodDraw.bg.g, foodDraw.bg.b)
-      love.graphics.rectangle("fill", foodDraw.x, foodDraw.y, foodDraw.w, foodDraw.h)
-    end
-
-    for i, snakePart in pairs(snake.draw) do
-      love.graphics.setColor(snakePart.bg.r, snakePart.bg.g, snakePart.bg.b)
-      love.graphics.rectangle("fill", snakePart.x, snakePart.y, snakePart.w, snakePart.h)
-    end
+  snake:draw()
+  food:draw()
 end

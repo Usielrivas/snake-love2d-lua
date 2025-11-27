@@ -77,11 +77,19 @@ function Snake:newHead()
      return newHead
 end
 
+function Snake:headToBody()
+   local head = self:head()
+   head.bg = Snake.BODY_COLOR
+   head.head = false
+   head.body = true
+end
+
 function Snake:direction()
     if self.control == 'pause' then
         return
     end
 
+    self:headToBody()
     local left = 0
     local right = love.graphics.getWidth()
     local top = 0
@@ -90,18 +98,22 @@ function Snake:direction()
 
     if self.control == 'right' then
       newHead.x = newHead.x + Snake.CELL
+      if newHead.x >= right then newHead.x = 0 end
     end
 
     if self.control == 'left' then
       newHead.x = newHead.x - Snake.CELL
+      if newHead.x < 0 then newHead.x = right - Snake.CELL end
     end
 
     if self.control == 'up' then
         newHead.y = newHead.y - Snake.CELL
+        if newHead.y < 0 then newHead.y = bottom - Snake.CELL end
     end
 
     if self.control == 'down' then
       newHead.y = newHead.y + Snake.CELL
+      if newHead.y >= bottom then newHead.y = 0 end
     end
 
     table.insert(self.draw, 1, newHead)
@@ -124,6 +136,13 @@ function Snake:ate(cols)
     world:remove(self.draw[#self.draw])
     table.remove(self.draw)
   end
+end
+
+function Snake:draw()
+   for i, snakePart in pairs(self.draw) do
+      love.graphics.setColor(snakePart.bg.r, snakePart.bg.g, snakePart.bg.b)
+      love.graphics.rectangle("fill", snakePart.x, snakePart.y, snakePart.w, snakePart.h)
+    end
 end
 
 return Snake
