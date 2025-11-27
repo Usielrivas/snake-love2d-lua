@@ -89,19 +89,19 @@ function Snake:direction()
     local newHead = self:newHead()
 
     if self.control == 'right' then
-      newHead.x = headWas.x + Snake.CELL
+      newHead.x = newHead.x + Snake.CELL
     end
 
     if self.control == 'left' then
-      newHead.x = headWas.x - Snake.CELL
+      newHead.x = newHead.x - Snake.CELL
     end
 
     if self.control == 'up' then
-        newHead.y = headWas.y - Snake.CELL
+        newHead.y = newHead.y - Snake.CELL
     end
 
     if self.control == 'down' then
-      newHead.y = headWas.y + Snake.CELL
+      newHead.y = newHead.y + Snake.CELL
     end
 
     table.insert(self.draw, 1, newHead)
