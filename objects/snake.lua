@@ -14,11 +14,12 @@ function Snake:new()
     self.timer = 0
     self.speed = 40
     self.control = 'pause'
-    self.draw = {
+    self.tinySnake = {
         head,
         cola1,
         cola2,
     }
+    self.draw = self.tinySnake
 
     for i, parte in pairs(self.draw) do
         world:add(parte, parte.x, parte.y, parte.w, parte.h)
@@ -129,6 +130,9 @@ function Snake:ate(cols)
     if col.other.food then
       ate = true
       food:reset()
+    else
+      self.draw = self.tinySnake
+      self.control = 'pause'
     end
   end
 
