@@ -8,6 +8,7 @@ Snake.HEAD_COLOR = { r = 38 / Snake.COLOR_BASE, g = 112 / Snake.COLOR_BASE, b = 
 Snake.BODY_COLOR = { r = 186 / Snake.COLOR_BASE, g = 38 / Snake.COLOR_BASE, b = 253 / Snake.COLOR_BASE }
 
 function Snake:new()
+    self.gameOver = false
     self.timer = 0
     self.speed = 40
     self.control = 'pause'
@@ -94,6 +95,7 @@ function Snake:direction()
         return
     end
 
+    self.gameOver = false
     self:headToBody()
     local left = 0
     local right = love.graphics.getWidth()
@@ -129,20 +131,26 @@ end
 
 function Snake:ate(cols)
   local ate = false
+  local reset = false
     
   for i, col in pairs(cols) do
     if col.other.food then
       ate = true
       food:reset()
     elseif not ate then
+      reset = true
       self.control = 'pause'
-      self:reset()
+      self.gameOver = true
     end
   end
 
   if not ate then
     world:remove(self.draw[#self.draw])
     table.remove(self.draw)
+  end
+
+  if reset then
+    self:reset()
   end
 end
 
