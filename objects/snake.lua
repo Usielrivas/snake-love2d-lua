@@ -8,39 +8,43 @@ Snake.HEAD_COLOR = { r = 38 / Snake.COLOR_BASE, g = 112 / Snake.COLOR_BASE, b = 
 Snake.BODY_COLOR = { r = 186 / Snake.COLOR_BASE, g = 38 / Snake.COLOR_BASE, b = 253 / Snake.COLOR_BASE }
 
 function Snake:new()
-    local head = { x = 20, y = 40, w = Snake.CELL, h = Snake.CELL, head = true, bg = Snake.HEAD_COLOR }
-    local cola1 = { x = 20, y = 20, w = Snake.CELL, h = Snake.CELL,  body = true, bg = Snake.BODY_COLOR }
-    local cola2 = { x = 20, y = 0, w = Snake.CELL, h = Snake.CELL, body = true, bg = Snake.BODY_COLOR }
     self.timer = 0
     self.speed = 40
     self.control = 'pause'
-    self.tinySnake = {
-        head,
-        cola1,
-        cola2,
-    }
-    self.draw = self.tinySnake
+    self.draw = self:init()
 
     for i, parte in pairs(self.draw) do
         world:add(parte, parte.x, parte.y, parte.w, parte.h)
     end
 end
 
+function Snake:init()
+    local head = { x = 20, y = 40, w = Snake.CELL, h = Snake.CELL, head = true, bg = Snake.HEAD_COLOR }
+    local cola1 = { x = 20, y = 20, w = Snake.CELL, h = Snake.CELL,  body = true, bg = Snake.BODY_COLOR }
+    local cola2 = { x = 20, y = 0, w = Snake.CELL, h = Snake.CELL, body = true, bg = Snake.BODY_COLOR }
+
+    return {
+        head,
+        cola1,
+        cola2,
+    }
+end
+
 function Snake:move(dt)
     if love.keyboard.isDown("up") then
-        self.control = 'up'
+      if self.control ~= 'down' then self.control = 'up' end
     end
 
     if love.keyboard.isDown("down") then
-        self.control = 'down'
+      if self.control ~= 'up' then self.control = 'down' end
     end
 
     if love.keyboard.isDown("left") then
-        self.control = 'left'
+      if self.control ~= 'right' then self.control = 'left' end
     end
 
     if love.keyboard.isDown("right") then
-        self.control = 'right'
+      if self.control ~= 'left' then self.control = 'right' end
     end
 
     if love.keyboard.isDown("space") then
@@ -130,9 +134,9 @@ function Snake:ate(cols)
     if col.other.food then
       ate = true
       food:reset()
-    else
-      self.draw = self.tinySnake
+    elseif not ate then
       self.control = 'pause'
+      self:reset()
     end
   end
 
@@ -140,6 +144,18 @@ function Snake:ate(cols)
     world:remove(self.draw[#self.draw])
     table.remove(self.draw)
   end
+end
+
+function Snake:reset()
+    for i, part in ipairs(self.draw) do
+      world:remove(part)
+    end
+
+    food:reset()
+    self.draw = self:init()
+    for i, parte in pairs(self.draw) do
+        world:add(parte, parte.x, parte.y, parte.w, parte.h)
+    end
 end
 
 function Snake:drawSnake()
