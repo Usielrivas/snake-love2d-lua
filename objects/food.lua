@@ -25,12 +25,12 @@ function Food:create()
 end
 
 function Food:posicion()
-    local right = love.graphics.getWidth()
-    local bottom = love.graphics.getHeight()
+    local right = math.floor((love.graphics.getWidth() / Snake.CELL) - 1)
+    local bottom = math.floor((love.graphics.getHeight() / Snake.CELL) - 1)
 
-    local x = math.random(0, right)
-    local y = math.random(0, bottom)
-    
+    local x = math.random(0, right * Snake.CELL)
+    local y = math.random(0, bottom * Snake.CELL)
+
     return { x = x, y = y }
 end
 
