@@ -7,11 +7,22 @@ function Info:new()
   self.fontLg = love.graphics.newFont(24)
   self.gameOver = false
   self.points = 0
+  self.textCenter = ""
+  self.showTextCenter = false
 end
 
-function Info:move(gameOver, SnakeLarge)
+function Info:move(gameOver, SnakeLarge, control)
   self.gameOver = gameOver
   self.points = SnakeLarge - Info.SnakeLargeInit
+  if self.gameOver then
+    self.textCenter = "Game Over, touch to new game."
+  end
+
+  if control == "pause" then
+    self.textCenter = "Pause, click direction to continue"
+  end
+
+  self.showTextCenter = self.gameOver or control == "pause"
 end
 
 function Info:draw()
@@ -19,9 +30,9 @@ function Info:draw()
   love.graphics.setFont(self.fontMd)
   love.graphics.printf("Points: " .. self.points, 0, 10, love.graphics.getWidth(), 'center')
 
-  if self.gameOver then
+  if self.showTextCenter then
     love.graphics.setFont(self.fontLg)
-    love.graphics.printf("Game Over, touch to new game.", 0, 200, love.graphics.getWidth(), 'center')
+    love.graphics.printf(self.textCenter, 0, 200, love.graphics.getWidth(), 'center')
   end
 end
 

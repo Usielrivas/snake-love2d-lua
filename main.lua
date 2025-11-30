@@ -16,11 +16,11 @@ end
 
 function love.update(dt)
   snake:move(dt)
-  info:move(snake.gameOver, #snake.draw)
+  info:move(snake.gameOver, #snake.draw, snake.control)
 end
 
 function love.draw()
-  info:draw()
   snake:drawSnake()
   food:drawFood()
+  info:draw()
 end
