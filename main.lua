@@ -19,6 +19,18 @@ function love.update(dt)
   info:move(snake.gameOver, #snake.draw, snake.control)
 end
 
+-- Touch (móvil)
+function love.touchpressed(id, x, y)
+    snake.control = snake:handleInput(x, y)
+end
+
+-- Mouse (PC)
+function love.mousepressed(x, y, button)
+    if button == 1 then
+      snake.control = snake:handleInput(x, y)
+    end
+end
+
 function love.draw()
   snake:drawSnake()
   food:drawFood()

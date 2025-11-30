@@ -31,6 +31,48 @@ function Snake:init()
     }
 end
 
+function Snake:handleInput(x, y)
+    local direction = self.control
+    local screenW = love.graphics.getWidth()
+    local screenH = love.graphics.getHeight()
+
+    -- Si viene de touch, x y y están en 0–1, convertir
+    if x < 1 and y < 1 then
+        x = x * screenW
+        y = y * screenH
+    end
+
+    local centerX = screenW / 2
+    local centerY = screenH / 2
+
+    local dx = x - centerX
+    local dy = y - centerY
+
+    if math.abs(dx) > math.abs(dy) then
+        if dx > 0 then
+          if self.control ~= "left" then
+            direction = "right"
+          end
+        else
+          if self.control ~= "right" then
+            direction = "left"
+          end
+        end
+    else
+        if dy > 0 then
+          if self.control ~= "up" then
+            direction = "down"
+          end
+        else
+          if self.control ~= "down" then
+            direction = "up"
+          end
+        end
+    end
+
+    return direction
+end
+
 function Snake:move(dt)
     if love.keyboard.isDown("up") then
       if self.control ~= 'down' then self.control = 'up' end
