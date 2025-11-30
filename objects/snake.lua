@@ -2,7 +2,6 @@ local Snake = Object:extend()
 
 Snake.HEAD = 1
 Snake.COLOR_BASE = 255
-Snake.tick = 0.12
 Snake.CELL = 20
 Snake.HEAD_COLOR = { r = 38 / Snake.COLOR_BASE, g = 112 / Snake.COLOR_BASE, b = 253 / Snake.COLOR_BASE }
 Snake.BODY_COLOR = { r = 186 / Snake.COLOR_BASE, g = 38 / Snake.COLOR_BASE, b = 253 / Snake.COLOR_BASE }
@@ -11,6 +10,7 @@ function Snake:new()
     self.gameOver = false
     self.timer = 0
     self.speed = 40
+    self.tick = 0.15
     self.control = 'pause'
     self.draw = self:init()
 
@@ -57,8 +57,8 @@ end
 
 function Snake:run(dt)
   self.timer = self.timer + dt
-  if self.timer >= Snake.tick then
-    self.timer = self.timer - Snake.tick
+  if self.timer >= self.tick then
+    self.timer = self.timer - self.tick
     
     self:direction()
   end
@@ -137,6 +137,10 @@ function Snake:ate(cols)
     if col.other.food then
       ate = true
       food:reset()
+      -- Aunmentar dificultad
+      if self.tick >= 1 then
+        self.tick = self.tick - 0.005
+      end
     elseif not ate then
       reset = true
       self.control = 'pause'

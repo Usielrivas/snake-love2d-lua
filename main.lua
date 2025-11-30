@@ -1,32 +1,26 @@
 function love.load()
-  font = love.graphics.newFont(20)
   math.randomseed(os.time())
   Object = require 'libs.classic'
   Bump = require 'libs.bump'
+  Snake = require 'objects.snake'
+  Food = require 'objects.food'
+  Info = require 'objects.info'
+
   math.randomseed(os.time())
 
   world = Bump.newWorld()
-
-  Snake = require 'objects.snake'
   snake = Snake()
-
-  Food = require 'objects.food'
   food = Food()
+  info = Info()
 end
 
 function love.update(dt)
   snake:move(dt)
+  info:move(snake.gameOver, #snake.draw)
 end
 
 function love.draw()
-  love.graphics.setFont(font)
-  love.graphics.print("Points: " .. (#snake.draw - 3), 300, 10)
-
-  if snake.gameOver then
-    love.graphics.setFont(font)
-    love.graphics.print("Game Over, touch to new game.", 300, 300)
-  end
-
+  info:draw()
   snake:drawSnake()
   food:drawFood()
 end
