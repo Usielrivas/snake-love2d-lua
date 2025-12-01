@@ -7,6 +7,7 @@ function love.load()
   Info = require 'objects.info'
 
   math.randomseed(os.time())
+  bg = love.graphics.newImage("img/fondo.png")
 
   world = Bump.newWorld()
   snake = Snake()
@@ -32,6 +33,7 @@ function love.mousepressed(x, y, button)
 end
 
 function love.draw()
+  love.graphics.draw(bg, -30, -30)
   snake:drawSnake()
   food:drawFood()
   info:draw()

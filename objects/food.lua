@@ -1,5 +1,8 @@
 local Food = Object:extend()
 
+Food.COLOR = { r = 0, g = 1, b = 0 }
+Food.COLOR_RED = { r = 1, g = 0, b = 0 }
+
 function Food:new()
   local positionInitial = self:posicion()
   self.draw = {}
@@ -18,10 +21,23 @@ end
 
 function Food:create()
   local positionInitial = self:posicion()
-  local newFood = { x = positionInitial.x, y = positionInitial.y, w = 20, h = 20, food = true, bg = Snake.BODY_COLOR }
+  local newFood = { x = positionInitial.x, y = positionInitial.y, w = 20, h = 20, food = true, bg = Food.COLOR, state = 1 }
 
   world:add(newFood, newFood.x, newFood.y, newFood.w, newFood.h)
   table.insert(self.draw, newFood)
+end
+
+function Food:move()
+    if #self.draw == 1 then
+        local currentFood = self.draw[1]
+        if currentFood.state == 1 then
+          currentFood.bg = Food.COLOR_RED
+          currentFood.state = 2
+        else
+          currentFood.bg = Food.COLOR
+          currentFood.state = 1
+        end
+    end
 end
 
 function Food:posicion()

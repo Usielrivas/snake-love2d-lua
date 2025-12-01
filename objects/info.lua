@@ -14,9 +14,6 @@ end
 function Info:move(gameOver, SnakeLarge, control)
   self.gameOver = gameOver
   self.points = SnakeLarge - Info.SnakeLargeInit
-  if self.gameOver then
-    self.textCenter = "Game Over, touch to new game."
-  end
 
   if control == "pause" then
     self.textCenter = "Pause, click direction to continue"

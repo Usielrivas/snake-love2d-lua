@@ -3,8 +3,9 @@ local Snake = Object:extend()
 Snake.HEAD = 1
 Snake.COLOR_BASE = 255
 Snake.CELL = 20
-Snake.HEAD_COLOR = { r = 38 / Snake.COLOR_BASE, g = 112 / Snake.COLOR_BASE, b = 253 / Snake.COLOR_BASE }
-Snake.BODY_COLOR = { r = 186 / Snake.COLOR_BASE, g = 38 / Snake.COLOR_BASE, b = 253 / Snake.COLOR_BASE }
+Snake.HEAD_COLOR = { r = 1, g = 1, b = 1 }
+Snake.HEAD_COLOR_DOS = { r = 0, g = 1, b = 0 }
+Snake.BODY_COLOR = { r = 0, g = 1, b = 0 }
 
 function Snake:new()
     self.gameOver = false
@@ -20,7 +21,7 @@ function Snake:new()
 end
 
 function Snake:init()
-    local head = { x = 20, y = 40, w = Snake.CELL, h = Snake.CELL, head = true, bg = Snake.HEAD_COLOR }
+    local head = { x = 20, y = 40, w = Snake.CELL, h = Snake.CELL, head = true, bg = Snake.HEAD_COLOR, state = 1 }
     local cola1 = { x = 20, y = 20, w = Snake.CELL, h = Snake.CELL,  body = true, bg = Snake.BODY_COLOR }
     local cola2 = { x = 20, y = 0, w = Snake.CELL, h = Snake.CELL, body = true, bg = Snake.BODY_COLOR }
 
@@ -103,6 +104,7 @@ function Snake:run(dt)
     self.timer = self.timer - self.tick
     
     self:direction()
+    food:move()
   end
 end
 
@@ -112,14 +114,19 @@ end
 
 function Snake:newHead()
     local headWas = self:head()
+    local color = Snake.HEAD_COLOR
+    if headWas.state == 1 then
+      color = Snake.HEAD_COLOR_DOS
+    end
     local newHead = {
+       state = (headWas.state == 1) and 2 or 1,
        x = headWas.x, 
        y = headWas.y,
        w = Snake.CELL,
        h = Snake.CELL,
        head = true,
        body = false,
-       bg = Snake.HEAD_COLOR
+       bg = color
      }
 
      return newHead
